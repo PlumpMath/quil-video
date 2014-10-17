@@ -3,6 +3,8 @@
             [quil.util :as u]))
 
 
+
+
 (defn- wrap-fn [name function]
   (fn []
     (try
@@ -11,7 +13,7 @@
         (println "Exception in " name " function: " e "\nstacktrace: " (with-out-str (print-cause-trace e)))
         (Thread/sleep 1000)))))
 
-(defn- wrap-mouse-wheel [function]
+(defn- wrap-mouse-wheel [function] ;;generalize to include movie event
   (fn [rotation]
     (try
       (function rotation)
@@ -31,7 +33,9 @@
           [name (if (u/callable? value)
                   ; :mouse-wheel is a special case as it takes single argument
                   ; while all other fns don't take any arguments
-                  (if (= name :mouse-wheel)
+                  
+                  (if (#{:mouse-wheel :movie-event} name)
                     (wrap-mouse-wheel value)
-                    (wrap-fn name value))
+                    (wrap-fn name value)
+                    )
                   value)])))

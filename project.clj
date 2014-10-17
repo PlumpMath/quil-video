@@ -1,4 +1,4 @@
-(defproject quil "2.2.3-SNAPSHOT"
+(defproject quil "2.2.3-SNAPSHOT-VIDEO"
   :description "(mix Processing Clojure)"
   :url "http://github.com/quil/quil"
 
@@ -17,6 +17,7 @@
                  [quil/gluegen-rt-fat "2.1.5"]
                  [quil/processing-js "1.4.8"]
                  [com.lowagie/itext "2.1.7"]]
+
 
   :hooks [cljx.hooks]
 
@@ -41,7 +42,7 @@
 
   :source-paths ["src/clj" "target/gen/clj" "src/cljs" "target/gen/cljs"]
   :test-paths ["test/clj" "target/gentest/clj"]
-  :resource-paths ["resources"]
+  :resource-paths ["resources" "lib/gstreamer-java.jar" "lib/video.jar" "lib/jna.jar" "lib/macosx64"]
 
   :profiles {:dev {:dependencies [[hiccup "1.0.5"]
                                   [garden "1.1.6"]

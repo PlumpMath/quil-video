@@ -159,10 +159,18 @@
                 :focus-gained
                 :focus-lost])
 
+(defn -movieEvent
+  ([this movie]
+     
+     (with-applet this
+       ((:movie-event (.state this)) movie))))
+
 (gen-class
   :name "quil.Applet"
   :implements [clojure.lang.IMeta]
   :extends processing.core.PApplet
+  :methods [[movieEvent [processing.video.Movie] Object]]
+  
   :state state
   :init quil-applet-init
   :post-init quil-applet-post-init
@@ -184,6 +192,8 @@
                     noLoop noLoopParent
                     sketchFullScreen sketchFullScreenParent
                     exit exitParent})
+
+
 
 (defn -exit [this]
   (applet-close this))
@@ -411,6 +421,8 @@
         renderer          (or (:renderer options) :java2d)
         draw-fn           (or (:draw options) no-fn)
         setup-fn          (or (:setup options) no-fn)
+        movie-event-fn    (or (:movie-event options) (fn [movie] (println "default movie-event")
+                                                       #_(.read movie)))
         on-close-fn       (let [close-fn (or (:on-close options) no-fn)]
                             (if (:exit-on-close options)
                               (fn []
@@ -430,6 +442,7 @@
                                   :setup-fn setup-fn
                                   :draw-fn draw-fn
                                   :renderer renderer
+                                  :movie-event movie-event-fn
                                   :size size
                                   :display (:display options)
                                   :target-frame-rate (atom 60)}
